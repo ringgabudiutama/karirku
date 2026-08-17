@@ -9,7 +9,7 @@ export default async function LeaderboardPage() {
     by: ["marketerId"],
     _count: { _all: true },
     _sum: { views: true },
-    orderBy: { _count: { _all: "desc" } },
+   orderBy: { _count: { marketerId: "desc" } },
     take: 20,
   });
 
