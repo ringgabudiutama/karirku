@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { Trophy, Medal } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function LeaderboardPage() {
   const session = await getSession();
 
@@ -9,7 +11,7 @@ export default async function LeaderboardPage() {
     by: ["marketerId"],
     _count: { _all: true },
     _sum: { views: true },
-   orderBy: { _count: { marketerId: "desc" } },
+    orderBy: { _count: { _all: "desc" } },
     take: 20,
   });
 

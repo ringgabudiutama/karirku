@@ -6,6 +6,8 @@ import { ListChecks, Eye, Bookmark, TrendingUp, ArrowRight } from "lucide-react"
 import { STATUS_LABEL } from "@/lib/categories";
 import { formatRelatif, isExpired } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) return null;

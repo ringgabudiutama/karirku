@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { Bookmark } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function LokerSayaPage() {
   const session = await getSession();
   if (!session) return null; // middleware guards this route

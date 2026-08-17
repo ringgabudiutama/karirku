@@ -17,7 +17,7 @@ const ICONS: Record<string, React.ComponentType<{ size?: number; className?: str
   megaphone: Megaphone, sprout: Sprout, "heart-pulse": HeartPulse, cpu: Cpu, "hard-hat": HardHat,
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [totalLowongan, totalPerusahaanRows, totalPencariKerja, latest, kategoriCounts] =

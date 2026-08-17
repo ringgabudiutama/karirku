@@ -5,6 +5,8 @@ import DeleteDokumenButton from "@/components/DeleteDokumenButton";
 import { formatTanggal } from "@/lib/utils";
 import { FileText, FolderOpen } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function DokumenPage() {
   const session = await getSession();
   if (!session) return null;

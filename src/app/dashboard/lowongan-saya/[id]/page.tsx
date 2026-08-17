@@ -12,6 +12,8 @@ import {
 } from "@/lib/categories";
 import { Eye, Bookmark, MessageCircle, ArrowLeft, Paperclip } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function LowonganDetailPage({
   params,
   searchParams,

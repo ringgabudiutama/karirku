@@ -8,6 +8,8 @@ import type { Prisma } from "@prisma/client";
 
 type SearchParams = { q?: string; tab?: "semua" | "publish" | "ditutup" };
 
+export const dynamic = "force-dynamic";
+
 export default async function LowonganSayaPage({
   searchParams,
 }: {
