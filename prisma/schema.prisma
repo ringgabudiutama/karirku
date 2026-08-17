@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  MARKETER
+  PENCARI_KERJA
+}
+
+enum TipePekerjaan {
+  FULL_TIME
+  PART_TIME
+  KONTRAK
+  MAGANG
+  FREELANCE
+}
+
+enum Pengalaman {
+  FRESH_GRADUATE
+  KURANG_1_TAHUN
+  SATU_TIGA_TAHUN
+  TIGA_LIMA_TAHUN
+  LEBIH_5_TAHUN
+}
+
+enum Pendidikan {
+  SMA_SMK
+  D3
+  D4_S1
+  S2
+  TIDAK_DITENTUKAN
+}
+
+enum StatusLowongan {
+  PUBLISH
+  DITUTUP
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  whatsapp     String?
+  companyName  String? // filled when role = MARKETER, used as default for new listings
+  createdAt    DateTime @default(now())
+
+  lowongan   Lowongan[]
+  savedJobs  SavedJob[]
+  dokumen    Dokumen[]
+
+  @@index([role])
+}
+
+model Lowongan {
+  id          String @id @default(cuid())
+  marketerId  String
+  marketer    User   @relation(fields: [marketerId], references: [id], onDelete: Cascade)
+
+  // Data perusahaan
+  namaPerusahaan      String
+  websitePerusahaan   String?
+  instagramPerusahaan String?
+  emailPerusahaan     String?
+  namaPIC             String
+  whatsappPIC         String
+
+  // Data lowongan
+  judul             String
+  tipePekerjaan     TipePekerjaan
+  pengalaman        Pengalaman
+  pendidikanMinimal Pendidikan
+  deadline          DateTime
+  gaji              String?
+  kategori          String
+  subkategori       String?
+  provinsi          String
+  kabupatenKota     String?
+  deskripsi         String @db.Text
+  persyaratan       String @db.Text
+  linkSumber        String
+  fotoUrl           String?
+
+  status    StatusLowongan @default(PUBLISH)
+  views     Int            @default(0)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  evidence  Evidence[]
+  savedBy   SavedJob[]
+
+  @@index([kategori])
+  @@index([provinsi])
+  @@index([status])
+  @@index([marketerId])
+}
+
+model Evidence {
+  id         String   @id @default(cuid())
+  lowonganId String
+  lowongan   Lowongan @relation(fields: [lowonganId], references: [id], onDelete: Cascade)
+  fileUrl    String
+  createdAt  DateTime @default(now())
+}
+
+model SavedJob {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lowonganId String
+  lowongan   Lowongan @relation(fields: [lowonganId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, lowonganId])
+}
+
+model Dokumen {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nama      String
+  fileUrl   String
+  createdAt DateTime @default(now())
+}
