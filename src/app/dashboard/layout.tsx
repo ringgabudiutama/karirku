@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 import LogoutButton from "@/components/LogoutButton";
+import Logo from "@/components/Logo";
 import { getSession } from "@/lib/auth";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -11,9 +12,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col pb-16 lg:pb-0">
         <header className="flex h-16 items-center justify-between border-b border-ink-100 bg-white px-4 sm:px-6">
-          <div className="flex items-center gap-1 lg:hidden">
-            <span className="font-display text-lg font-extrabold text-navy-900">Karir</span>
-            <span className="font-display text-lg font-extrabold text-brand-600">Ku</span>
+          <div className="lg:hidden">
+            <Logo size="sm" />
           </div>
           <div className="ml-auto flex items-center gap-4">
             <div className="text-right">

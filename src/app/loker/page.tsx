@@ -6,14 +6,14 @@ import { KATEGORI_LOWONGAN, PROVINSI_LIST, TIPE_PEKERJAAN_LABEL } from "@/lib/ca
 import { SearchX } from "lucide-react";
 import type { Prisma } from "@prisma/client";
 
+export const dynamic = "force-dynamic";
+
 type SearchParams = {
   q?: string;
   kategori?: string;
   provinsi?: string;
   tipe?: string;
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function LokerPage({
   searchParams,

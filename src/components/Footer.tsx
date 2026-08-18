@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
@@ -6,10 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-1">
-              <span className="font-display text-lg font-extrabold text-white">Karir</span>
-              <span className="font-display text-lg font-extrabold text-sky-400">Ku</span>
-            </div>
+            <Logo onDark />
             <p className="mt-3 text-sm leading-relaxed text-ink-300/80">
               Menghubungkan pencari kerja terbaik dengan perusahaan terpercaya di seluruh Indonesia.
             </p>

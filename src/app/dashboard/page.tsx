@@ -2,17 +2,23 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import StatCard from "@/components/StatCard";
+import LowonganTrendChart, { type TrendPoint } from "@/components/charts/LowonganTrendChart";
+import ActiveGauge from "@/components/charts/ActiveGauge";
 import { ListChecks, Eye, Bookmark, TrendingUp, ArrowRight } from "lucide-react";
 import { STATUS_LABEL } from "@/lib/categories";
 import { formatRelatif, isExpired } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
+const BULAN_LABEL = [
+  "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
+];
+
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) return null;
 
-  const [total, aktif, agg, savedTotal, recent] = await Promise.all([
+  const [total, aktif, agg, savedTotal, recent, semuaLowongan] = await Promise.all([
     prisma.lowongan.count({ where: { marketerId: session.userId } }),
     prisma.lowongan.count({
       where: { marketerId: session.userId, status: "PUBLISH", deadline: { gte: new Date() } },
@@ -27,7 +33,25 @@ export default async function DashboardPage() {
       orderBy: { createdAt: "desc" },
       take: 5,
     }),
+    prisma.lowongan.findMany({
+      where: { marketerId: session.userId },
+      select: { createdAt: true },
+    }),
   ]);
+
+  // bucket listings into the last 6 calendar months for the trend chart
+  const now = new Date();
+  const trend: TrendPoint[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const count = semuaLowongan.filter((l) => {
+      const c = new Date(l.createdAt);
+      return c.getFullYear() === d.getFullYear() && c.getMonth() === d.getMonth();
+    }).length;
+    trend.push({ bulan: BULAN_LABEL[d.getMonth()], total: count });
+  }
+
+  const persenAktif = total > 0 ? (aktif / total) * 100 : 0;
 
   return (
     <div>
@@ -46,6 +70,23 @@ export default async function DashboardPage() {
         <StatCard icon={TrendingUp} label="Lowongan Aktif" value={aktif} tone="brand" />
         <StatCard icon={Eye} label="Total Dilihat" value={agg._sum.views ?? 0} tone="gold" />
         <StatCard icon={Bookmark} label="Total Disimpan" value={savedTotal} tone="brand" />
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="card p-5 lg:col-span-2">
+          <h2 className="font-display text-base font-bold text-navy-900">Tren Lowongan · 6 Bulan Terakhir</h2>
+          <p className="mt-0.5 text-xs text-ink-500">Jumlah lowongan yang kamu input per bulan</p>
+          <div className="mt-3">
+            <LowonganTrendChart data={trend} />
+          </div>
+        </div>
+        <div className="card flex flex-col items-center justify-center p-5">
+          <h2 className="self-start font-display text-base font-bold text-navy-900">Status Lowongan</h2>
+          <p className="self-start mt-0.5 text-xs text-ink-500">Persentase yang masih aktif</p>
+          <div className="mt-2">
+            <ActiveGauge percent={persenAktif} label={`${aktif} dari ${total} lowongan aktif`} />
+          </div>
+        </div>
       </div>
 
       <div className="card mt-6 p-5">

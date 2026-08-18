@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function AuthShell({
   title,
@@ -14,9 +15,8 @@ export default function AuthShell({
       <div className="relative hidden flex-col justify-between overflow-hidden bg-navy-950 p-10 lg:flex">
         <div className="absolute inset-0 bg-career-line opacity-40" />
         <div className="absolute inset-0 bg-grid-fade" />
-        <Link href="/" className="relative flex items-center gap-1">
-          <span className="font-display text-xl font-extrabold text-white">Karir</span>
-          <span className="font-display text-xl font-extrabold text-sky-400">Ku</span>
+        <Link href="/" className="relative">
+          <Logo onDark />
         </Link>
         <div className="relative">
           <h2 className="font-display text-3xl font-extrabold leading-tight text-white">
@@ -31,9 +31,8 @@ export default function AuthShell({
 
       <div className="flex items-center justify-center px-4 py-12 sm:px-6">
         <div className="w-full max-w-sm">
-          <Link href="/" className="mb-8 flex items-center gap-1 lg:hidden">
-            <span className="font-display text-xl font-extrabold text-navy-900">Karir</span>
-            <span className="font-display text-xl font-extrabold text-brand-600">Ku</span>
+          <Link href="/" className="mb-8 inline-block lg:hidden">
+            <Logo />
           </Link>
           <h1 className="font-display text-2xl font-bold text-navy-900">{title}</h1>
           <p className="mt-1 text-sm text-ink-500">{subtitle}</p>

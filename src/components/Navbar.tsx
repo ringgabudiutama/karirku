@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import LogoutButton from "@/components/LogoutButton";
+import Logo from "@/components/Logo";
 
 export default async function Navbar() {
   const session = await getSession();
@@ -8,12 +9,8 @@ export default async function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-100 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="KarirKu" className="h-8 w-8 object-contain" />
-          <span className="flex items-center gap-1.5">
-            <span className="font-display text-xl font-extrabold text-navy-900">Karir</span>
-            <span className="font-display text-xl font-extrabold text-brand-600">Ku</span>
-          </span>
+        <Link href="/">
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">

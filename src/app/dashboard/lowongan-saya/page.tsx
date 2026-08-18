@@ -6,9 +6,9 @@ import DeleteLowonganButton from "@/components/DeleteLowonganButton";
 import ShareLowonganButton from "@/components/ShareLowonganButton";
 import type { Prisma } from "@prisma/client";
 
-type SearchParams = { q?: string; tab?: "semua" | "publish" | "ditutup" };
-
 export const dynamic = "force-dynamic";
+
+type SearchParams = { q?: string; tab?: "semua" | "publish" | "ditutup" };
 
 export default async function LowonganSayaPage({
   searchParams,
